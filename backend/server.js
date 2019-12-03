@@ -5,12 +5,17 @@ var express = require('express'),
     Pokemon = require('./models/pokemonModel'), //created model loading here
     bodyParser = require('body-parser');
 
+const swaggerUi = require('swagger-ui-express');
+const openApiDocumentation = require('./docs');
+
 // mongoose instance connection url connection
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost:27017/pokemons');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openApiDocumentation));
+
 
 var routes = require('./routes/pokemonRoutes'); //importing route
 routes(app); //register the route
