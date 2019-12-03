@@ -17,7 +17,7 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/pokemons'
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openApiDocumentation));
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(openApiDocumentation));
 
 
 var routes = require('./routes/pokemonRoutes'); //importing route
