@@ -8,7 +8,10 @@ var Pokemon_api = new Pokedex();
 
 exports.getPokemonsList = function(req, res) {
     console.log("=== Requesting pokemon list from poke api ===")
-    Pokemon_api.getPokemonsList().then(response => {
+    Pokemon_api.getPokemonsList().then((err, response) => {
+        if (err) {
+            return res.status(400).send(err)
+        }
         return res.status(200).json(response)
     })
 }
