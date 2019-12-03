@@ -14,8 +14,17 @@ module.exports = {
             url: 'https://opensource.org/licenses/MIT'
         }
     },
+    servers: [{
+            url: 'http://localhost:3000/',
+            description: 'Local server'
+        },
+        {
+            url: 'https://pokeshop-nosql.herokuapp.com/',
+            description: 'Development server'
+        },
+    ],
     paths: {
-        '/': {
+        '/pokeapi': {
             get: {
                 description: 'Get all items from poke api',
                 operationId: 'getPokemonsList',
@@ -25,13 +34,34 @@ module.exports = {
                         content: {
                             'application/json': {
                                 schema: {
-                                    $ref: '#/components/schemas/Pokemon'
-                                }
+                                    type: 'object',
+                                    description: 'Pokemon',
+                                    properties: {
+                                        type: 'array',
+                                        items: {
+                                            type: 'object',
+                                            example: {
+                                                id: {
+                                                    type: 'number',
+                                                    example: 25
+                                                },
+                                                name: {
+                                                    type: 'string',
+                                                    example: 'pikachu'
+                                                },
+                                                is_default: {
+                                                    type: 'bool',
+                                                    example: true
+                                                },
+                                            }
+                                        }
+                                    }
+                                },
                             }
                         }
                     },
                 }
-            },
+            }
         },
         '/registered': {
             get: {
@@ -43,7 +73,50 @@ module.exports = {
                         content: {
                             'application/json': {
                                 schema: {
-                                    $ref: '#/components/schemas/Pokemon'
+                                    type: 'object',
+                                    description: 'Known pokemons',
+                                    properties: {
+                                        type: 'array',
+                                        items: {
+                                            type: 'object',
+                                            example: {
+                                                id: {
+                                                    type: 'number',
+                                                    example: 25
+                                                },
+                                                name: {
+                                                    type: 'string',
+                                                    example: 'pikachu'
+                                                },
+                                                is_default: {
+                                                    type: 'bool',
+                                                    example: true
+                                                },
+                                                transactions: {
+                                                    type: 'array',
+                                                    items: {
+                                                        type: 'object',
+                                                        example: {
+                                                            type: {
+                                                                type: 'string',
+                                                                enum: ['to_buy', 'to_sell'],
+                                                                default: 'to_buy'
+                                                            },
+                                                            value: {
+                                                                type: 'number',
+                                                                example: 50
+                                                            },
+                                                            status: {
+                                                                type: 'string',
+                                                                enum: ['ongoing', 'done'],
+                                                                default: 'ongoing'
+                                                            },
+                                                        }
+                                                    }
+                                                },
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -53,7 +126,7 @@ module.exports = {
                         content: {
                             'application/json': {
                                 schema: {
-                                    $ref: '#/components/schemas/error'
+                                    type: 'object'
                                 }
                             }
                         }
@@ -61,7 +134,7 @@ module.exports = {
                 },
             }
         },
-        '/:pokemon_name': {
+        '/{pokemon_name}': {
             get: {
                 description: 'Get information about one pokemon',
                 operationId: 'findByName',
@@ -71,8 +144,45 @@ module.exports = {
                         content: {
                             'application/json': {
                                 schema: {
-                                    $ref: '#/components/schemas/Pokemon'
-                                }
+                                    type: 'object',
+                                    description: 'Pokemon',
+                                    properties: {
+                                        id: {
+                                            type: 'number',
+                                            example: 25
+                                        },
+                                        name: {
+                                            type: 'string',
+                                            example: 'pikachu'
+                                        },
+                                        is_default: {
+                                            type: 'bool',
+                                            example: true
+                                        },
+                                        transactions: {
+                                            type: 'array',
+                                            items: {
+                                                type: 'object',
+                                                example: {
+                                                    type: {
+                                                        type: 'string',
+                                                        enum: ['to_buy', 'to_sell'],
+                                                        default: 'to_buy'
+                                                    },
+                                                    value: {
+                                                        type: 'number',
+                                                        example: 50
+                                                    },
+                                                    status: {
+                                                        type: 'string',
+                                                        enum: ['ongoing', 'done'],
+                                                        default: 'ongoing'
+                                                    },
+                                                }
+                                            }
+                                        },
+                                    }
+                                },
                             }
                         }
                     },
@@ -81,7 +191,7 @@ module.exports = {
                         content: {
                             'application/json': {
                                 schema: {
-                                    $ref: '#/components/schemas/error'
+                                    type: 'object'
                                 }
                             }
                         }
@@ -91,22 +201,49 @@ module.exports = {
                     name: 'pokemon_name',
                     in: 'path',
                     schema: {
-                        $ref: '#/components/schemas/name'
+                        type: 'string',
+                        example: 'ditto'
                     },
                     required: true,
                     description: 'Pokemon name'
-                }],
+                }]
             },
             put: {
                 description: 'Create a new transaction to this pokemon',
                 operationId: 'createTransaction',
-                parameters: [],
+                parameters: [{
+                    name: 'pokemon_name',
+                    in: 'path',
+                    schema: {
+                        type: 'string',
+                        example: 'ditto'
+                    },
+                    required: true,
+                    description: 'Pokemon name'
+                }],
                 requestBody: {
                     content: {
                         'application/json': {
                             schema: {
-                                $ref: '#/components/schemas/TransactionBody'
-                            }
+                                type: 'object',
+                                description: 'Transaction body example',
+                                properties: {
+                                    type: {
+                                        type: 'string',
+                                        enum: ['to_buy', 'to_sell'],
+                                        default: 'to_buy'
+                                    },
+                                    value: {
+                                        type: 'number',
+                                        example: 50
+                                    },
+                                    status: {
+                                        type: 'string',
+                                        enum: ['ongoing', 'done'],
+                                        default: 'ongoing'
+                                    }
+                                }
+                            },
                         }
                     },
                     required: true
@@ -120,7 +257,7 @@ module.exports = {
                         content: {
                             'application/json': {
                                 schema: {
-                                    $ref: '#/components/schemas/error'
+                                    type: 'object'
                                 },
                             }
                         }
@@ -128,7 +265,7 @@ module.exports = {
                 }
             }
         },
-        '/:pokemon_name/transactions': {
+        '/{pokemon_name}/transactions': {
             get: {
                 description: 'Get transactions about this pokemon',
                 operationId: 'getTransactions',
@@ -138,8 +275,33 @@ module.exports = {
                         content: {
                             'application/json': {
                                 schema: {
-                                    $ref: '#/components/schemas/TransactionBody'
-                                }
+                                    type: 'array',
+                                    description: 'Transaction body example',
+                                    items: {
+                                        transactions: {
+                                            type: 'array',
+                                            items: {
+                                                type: 'object',
+                                                example: {
+                                                    type: {
+                                                        type: 'string',
+                                                        enum: ['to_buy', 'to_sell'],
+                                                        default: 'to_buy'
+                                                    },
+                                                    value: {
+                                                        type: 'number',
+                                                        example: 50
+                                                    },
+                                                    status: {
+                                                        type: 'string',
+                                                        enum: ['ongoing', 'done'],
+                                                        default: 'ongoing'
+                                                    },
+                                                }
+                                            }
+                                        },
+                                    }
+                                },
                             }
                         }
                     },
@@ -148,7 +310,7 @@ module.exports = {
                         content: {
                             'application/json': {
                                 schema: {
-                                    $ref: '#/components/schemas/error'
+                                    type: 'object'
                                 }
                             }
                         }
@@ -158,14 +320,15 @@ module.exports = {
                     name: 'pokemon_name',
                     in: 'path',
                     schema: {
-                        $ref: '#/components/schemas/name'
+                        type: 'string',
+                        example: 'ditto'
                     },
                     required: true,
                     description: 'Pokemon name'
                 }],
             }
         },
-        '/:pokemon_name/transactions/:transaction_id': {
+        '/{pokemon_name}/transactions/{transaction_id}': {
             put: {
                 description: 'Complete this transaction',
                 operationId: 'finishTransaction',
@@ -175,8 +338,25 @@ module.exports = {
                         content: {
                             'application/json': {
                                 schema: {
-                                    $ref: '#/components/schemas/TransactionBody'
-                                }
+                                    type: 'object',
+                                    description: 'Transaction body example',
+                                    properties: {
+                                        type: {
+                                            type: 'string',
+                                            enum: ['to_buy', 'to_sell'],
+                                            default: 'to_buy'
+                                        },
+                                        value: {
+                                            type: 'number',
+                                            example: 50
+                                        },
+                                        status: {
+                                            type: 'string',
+                                            enum: ['ongoing', 'done'],
+                                            default: 'ongoing'
+                                        }
+                                    }
+                                },
                             }
                         }
                     },
@@ -185,7 +365,7 @@ module.exports = {
                         content: {
                             'application/json': {
                                 schema: {
-                                    $ref: '#/components/schemas/error'
+                                    type: 'object'
                                 }
                             }
                         }
@@ -195,7 +375,8 @@ module.exports = {
                         name: 'pokemon_name',
                         in: 'path',
                         schema: {
-                            $ref: '#/components/schemas/name'
+                            type: 'string',
+                            example: 'ditto'
                         },
                         required: true,
                         description: 'Pokemon name'
@@ -204,165 +385,13 @@ module.exports = {
                         name: 'transaction_id',
                         in: 'path',
                         schema: {
-                            $ref: '#/components/schemas/transaction_id'
+                            type: 'string'
                         },
                         required: true,
                         description: 'Transaction id'
                     }
                 ],
             },
-        },
-        components: {
-            schemas: {
-                TransactionBody: {
-                    type: 'object',
-                    description: 'Transaction body example',
-                    properties: {
-                        type: {
-                            $ref: '#/components/schemas/type'
-                        },
-                        value: {
-                            $ref: '#/components/schemas/value'
-                        },
-                        status: {
-                            $ref: '#/components/schemas/statu'
-                        },
-                    }
-                },
-                Pokemon: {
-                    type: 'object',
-                    description: 'Pokemon',
-                    properties: {
-                        abilities: {
-                            $ref: '#/components/schemas/abilites'
-                        },
-                        base_experience: {
-                            $ref: '#/components/schemas/base_experience'
-                        },
-                        forms: {
-                            $ref: '#/components/schemas/forms'
-                        },
-                        game_indices: {
-                            $ref: '#/components/schemas/game_indices'
-                        },
-                        height: {
-                            $ref: '#/components/schemas/height'
-                        },
-                        held_items: {
-                            $ref: '#/components/schemas/held_items'
-                        },
-                        id: {
-                            $ref: '#/components/schemas/id'
-                        },
-                        is_default: {
-                            $ref: '#/components/schemas/is_default'
-                        },
-                        location_area_encounters: {
-                            $ref: '#/components/schemas/location_area_encounters'
-                        },
-                        moves: {
-                            $ref: '#/components/schemas/moves'
-                        },
-                        name: {
-                            $ref: '#/components/schemas/name'
-                        },
-                        order: {
-                            $ref: '#/components/schemas/order'
-                        },
-                        species: {
-                            $ref: '#/components/schemas/species'
-                        },
-                        sprites: {
-                            $ref: '#/components/schemas/sprites'
-                        },
-                        stats: {
-                            $ref: '#/components/schemas/stats'
-                        },
-                        types: {
-                            $ref: '#/components/schemas/types'
-                        },
-                        weight: {
-                            $ref: '#/components/schemas/weight'
-                        },
-                        transactions: {
-                            $ref: '#/components/schemas/transactions'
-                        },
-                    }
-                },
-                type: {
-                    type: 'string',
-                    enum: ['to_buy', 'to_sell'],
-                    default: 'to_buy'
-                },
-                status: {
-                    type: 'string',
-                    enum: ['ongoing', 'done'],
-                    default: 'ongoing'
-                },
-                value: {
-                    type: 'number'
-                },
-                error: {
-                    type: 'object'
-                },
-                location_area_encounters: {
-                    type: 'string'
-                },
-                name: {
-                    type: 'string'
-                },
-                is_default: {
-                    type: 'bool'
-                },
-                weight: {
-                    type: 'number'
-                },
-                order: {
-                    type: 'number'
-                },
-                id: {
-                    type: 'number'
-                },
-                height: {
-                    type: 'number'
-                },
-                base_experience: {
-                    type: 'number'
-                },
-                species: {
-                    type: 'object'
-                },
-                sprites: {
-                    type: 'object'
-                },
-                abilites: {
-                    type: 'array'
-                },
-                forms: {
-                    type: 'array'
-                },
-                stats: {
-                    type: 'array'
-                },
-                types: {
-                    type: 'array'
-                },
-                moves: {
-                    type: 'array'
-                },
-                held_items: {
-                    type: 'array'
-                },
-                game_indices: {
-                    type: 'array'
-                },
-                transactions: {
-                    type: 'array'
-                },
-                transaction_id: {
-                    type: 'number'
-                }
-            }
         }
     }
 }

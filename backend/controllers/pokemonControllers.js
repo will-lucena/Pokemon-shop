@@ -24,6 +24,7 @@ exports.getPokemons = function(req, res) {
 }
 
 exports.findByName = async function(req, res) {
+    console.log(req)
     console.log("=== Requesting pokemon by name ===")
     let pokemon = await Model.find({ name: req.params.pokemon_name }, 'id name sprites transactions')
     if (!pokemon || pokemon == undefined || pokemon[0] == undefined) {
