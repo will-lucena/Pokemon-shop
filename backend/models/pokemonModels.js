@@ -19,7 +19,8 @@ var Pokemon = new Schema({
     sprites: {},
     stats: [],
     types: [],
-    weight: Number
+    weight: Number,
+    negociations: []
 });
 
 module.exports = mongoose.model('pokemons', Pokemon);
