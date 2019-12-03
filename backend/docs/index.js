@@ -15,14 +15,12 @@ module.exports = {
         }
     },
     servers: [{
-            url: 'http://localhost:3000/',
-            description: 'Local server'
-        },
-        {
-            url: 'https://pokeshop-nosql.herokuapp.com/',
-            description: 'Development server'
-        },
-    ],
+        url: 'https://pokeshop-nosql.herokuapp.com/',
+        description: 'Development server'
+    }, {
+        url: 'http://localhost:3000/',
+        description: 'Local server'
+    }],
     paths: {
         '/pokeapi': {
             get: {
