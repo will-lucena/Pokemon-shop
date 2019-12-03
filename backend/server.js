@@ -1,3 +1,4 @@
+require('dotenv').config()
 var express = require('express'),
     app = express(),
     port = process.env.PORT || 3000,
@@ -10,7 +11,9 @@ const openApiDocumentation = require('./docs');
 
 // mongoose instance connection url connection
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/pokemons');
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/pokemons');
+
+//mongoose.connect('mongodb://localhost:27017/pokemons');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
