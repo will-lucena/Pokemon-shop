@@ -2,6 +2,13 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+var transactionSchema = new Schema({
+    transaction: { type: mongoose.Schema.Types.ObjectId, ref: 'transactions' },
+    value: Number,
+    type: String,
+    status: String
+})
+
 var Pokemon = new Schema({
     abilities: [],
     base_experience: Number,
@@ -20,7 +27,7 @@ var Pokemon = new Schema({
     stats: [],
     types: [],
     weight: Number,
-    negociations: []
+    transactions: [transactionSchema]
 });
-
+mongoose.model('transactions', transactionSchema)
 module.exports = mongoose.model('pokemons', Pokemon);

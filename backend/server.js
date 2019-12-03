@@ -2,7 +2,7 @@ var express = require('express'),
     app = express(),
     port = process.env.PORT || 3000,
     mongoose = require('mongoose'),
-    Pokemon = require('./models/pokemonModels'), //created model loading here
+    Pokemon = require('./models/pokemonModel'), //created model loading here
     bodyParser = require('body-parser');
 
 // mongoose instance connection url connection
