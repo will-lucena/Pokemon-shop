@@ -1,9 +1,9 @@
 module.exports = {
-    openapi: '3.0.1',
+    openapi: "3.0.0",
     info: {
         version: '1.0.0',
         title: 'Pokeshop',
-        description: 'User management API',
+        description: 'Pokemon market API',
         contact: {
             name: 'Will',
             email: 'will.lucen4@gmail.com',
@@ -14,6 +14,7 @@ module.exports = {
             url: 'https://opensource.org/licenses/MIT'
         }
     },
+    host: "pokeshop-nosql.herokuapp.com/",
     servers: [{
         url: 'https://pokeshop-nosql.herokuapp.com/',
         description: 'Development server'
@@ -28,7 +29,7 @@ module.exports = {
                 operationId: 'getPokemonsList',
                 responses: {
                     '200': {
-                        description: 'List of all poke api items',
+                        description: '200response',
                         content: {
                             'application/json': {
                                 schema: {
@@ -55,6 +56,19 @@ module.exports = {
                                         }
                                     }
                                 },
+                            }
+                        },
+                        "headers": {
+                            "Access-Control-Allow-Origin": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        description: "BadRequest",
+                        headers: {
+                            "Access-Control-Allow-Origin": {
+                                type: "string"
                             }
                         }
                     },
@@ -119,16 +133,14 @@ module.exports = {
                             }
                         }
                     },
-                    '500': {
-                        description: 'Internal request error',
-                        content: {
-                            'application/json': {
-                                schema: {
-                                    type: 'object'
-                                }
+                    "500": {
+                        description: "InternalServerError",
+                        headers: {
+                            "Access-Control-Allow-Origin": {
+                                type: "string"
                             }
                         }
-                    }
+                    },
                 },
             }
         },
@@ -138,7 +150,7 @@ module.exports = {
                 operationId: 'findByName',
                 responses: {
                     '200': {
-                        description: 'List of all poke api items',
+                        description: 'Pokemon informations',
                         content: {
                             'application/json': {
                                 schema: {
@@ -184,16 +196,14 @@ module.exports = {
                             }
                         }
                     },
-                    '500': {
-                        description: 'Internal request error',
-                        content: {
-                            'application/json': {
-                                schema: {
-                                    type: 'object'
-                                }
+                    "500": {
+                        description: "InternalServerError",
+                        headers: {
+                            "Access-Control-Allow-Origin": {
+                                type: "string"
                             }
                         }
-                    }
+                    },
                 },
                 parameters: [{
                     name: 'pokemon_name',
@@ -250,16 +260,14 @@ module.exports = {
                     '200': {
                         description: 'New transaction creacted to this pokemon'
                     },
-                    '500': {
-                        description: 'Internal request error',
-                        content: {
-                            'application/json': {
-                                schema: {
-                                    type: 'object'
-                                },
+                    "500": {
+                        description: "InternalServerError",
+                        headers: {
+                            "Access-Control-Allow-Origin": {
+                                type: "string"
                             }
                         }
-                    }
+                    },
                 }
             }
         },
@@ -303,16 +311,14 @@ module.exports = {
                             }
                         }
                     },
-                    '500': {
-                        description: 'Internal request error',
-                        content: {
-                            'application/json': {
-                                schema: {
-                                    type: 'object'
-                                }
+                    "500": {
+                        description: "InternalServerError",
+                        headers: {
+                            "Access-Control-Allow-Origin": {
+                                type: "string"
                             }
                         }
-                    }
+                    },
                 },
                 parameters: [{
                     name: 'pokemon_name',
@@ -332,7 +338,7 @@ module.exports = {
                 operationId: 'finishTransaction',
                 responses: {
                     '200': {
-                        description: 'Complete the transaction',
+                        description: 'Transaction completed',
                         content: {
                             'application/json': {
                                 schema: {
@@ -358,16 +364,14 @@ module.exports = {
                             }
                         }
                     },
-                    '500': {
-                        description: 'Internal request error',
-                        content: {
-                            'application/json': {
-                                schema: {
-                                    type: 'object'
-                                }
+                    "500": {
+                        description: "InternalServerError",
+                        headers: {
+                            "Access-Control-Allow-Origin": {
+                                type: "string"
                             }
                         }
-                    }
+                    },
                 },
                 parameters: [{
                         name: 'pokemon_name',
