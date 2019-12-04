@@ -15,7 +15,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(openApiDocumentation));
 
-
 var routes = require('./routes/pokemonRoutes');
 routes(app);
 

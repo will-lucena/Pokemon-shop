@@ -6,17 +6,19 @@ var Model = mongoose.model('pokemons');
 var Pokedex = require('pokedex-promise-v2');
 var Pokemon_api = new Pokedex();
 
-exports.getPokemonsList = function(req, res) {
+exports.getPokemonsList = function(_, res) {
     console.log("=== Requesting pokemon list from poke api ===")
-    Pokemon_api.getPokemonsList().then((err, response) => {
+    Pokemon_api.getPokemonsList().then((response, err) => {
         if (err) {
             return res.status(400).send(err)
         }
         return res.status(200).json(response)
+    }).catch(err => {
+        return res.status(400).send(err)
     })
 }
 
-exports.getPokemons = function(req, res) {
+exports.getPokemons = function(_, res) {
     console.log("=== Requesting pokemon list from database ===")
     Model.find({}, 'id name sprites transactions').exec((err, response) => {
         if (err) {
